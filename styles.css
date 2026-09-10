@@ -27,3 +27,6 @@
 .sale-cta div{display:grid;gap:5px}.sale-cta b{font-size:20px}.sale-cta span{color:#cbd7df}
 @media(max-width:960px){.sale-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.sale-card{padding:24px;grid-template-columns:1fr;gap:10px}.sale-cta{align-items:stretch;flex-direction:column}}
+.proof-card__image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.proof-card:hover .proof-card__image img{transform:scale(1.025)}
+@media(prefers-reduced-motion:reduce){.proof-card__image img{transition:none}.proof-card:hover .proof-card__image img{transform:none}}
