@@ -4,6 +4,6 @@
 
 ## Открыть сайт
 
-https://filippovarmada-cloud.github.io/hubinvest-landing/
+https://filippovarmada-cloud.github.io/
 
 Сайт находится на этапе согласования. Контактные данные и реквизиты, отмеченные как placeholders, необходимо заменить перед запуском рекламы.
