@@ -1,8 +1,8 @@
 /* Быстрая настройка контактов и отправки заявок — замените значения ниже. */
 const SITE_CONFIG = {
-  phoneDisplay: '+7 (912) 068-06-99',
-  phoneHref: '+79120680699',
-  messengerUrl: '', // пример: https://wa.me/73421234567
+  phoneDisplay: '+7 (919) 486-03-61',
+  phoneHref: '+79194860361',
+  email: 'habinvest-059@mail.ru',  messengerUrl: '', // пример: https://wa.me/73421234567
   formEndpoint: '', // URL вебхука CRM / формы. При пустом значении заявка не отправляется.
   metrikaId: '' // номер счётчика Яндекс.Метрики
 };
