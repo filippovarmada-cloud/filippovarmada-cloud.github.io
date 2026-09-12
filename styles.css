@@ -10,6 +10,17 @@
 .map-card__hub{position:absolute;z-index:3;display:grid;grid-template-columns:20px auto;column-gap:10px;align-items:center}.map-card__hub i{grid-row:1/3;width:18px;height:18px;background:var(--orange);border:4px solid #fff;border-radius:50%;box-shadow:0 0 0 8px rgba(255,99,56,.18),0 8px 18px rgba(8,31,51,.18)}.map-card__hub strong{position:static;margin:0;font-size:18px}.map-card__hub small{position:static;color:#617987;font-size:11px;font-weight:800;text-align:left;text-transform:uppercase;letter-spacing:.1em}.map-card__hub--perm{left:23%;top:62%}.map-card__hub--berezniki{right:16%;top:27%}
 .map-card__legend{position:absolute;z-index:3;left:28px;bottom:22px;padding:10px 15px;background:var(--navy);color:#fff;border-radius:30px;font-size:12px;font-weight:800}
 @media(max-width:640px){.map-card{height:360px}.map-card__region{inset:30px 25px 55px}.map-card__hub--perm{left:15%;top:63%}.map-card__hub--berezniki{right:8%;top:25%}.map-card__route{left:26%;width:48%}.map-card__legend{left:18px;right:18px;text-align:center}.map-card__region span{display:none}}
+
+/* Красочная карта Пермского края */
+.map-card{height:500px;background:#dceef7;border-color:#bdd8e5}
+.map-card:before,.map-card:after,.map-card__region,.map-card__route{display:none}
+.map-card__image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.map-card:after{content:"";display:block;position:absolute;inset:0;width:auto;height:auto;border:0;border-radius:0;background:linear-gradient(180deg,rgba(255,255,255,.04) 45%,rgba(8,31,51,.12) 100%);pointer-events:none}
+.map-card__hub{padding:9px 13px;background:rgba(255,255,255,.94);border:1px solid rgba(8,31,51,.12);border-radius:13px;box-shadow:0 10px 28px rgba(8,31,51,.2);backdrop-filter:blur(8px)}
+.map-card__hub i{width:20px;height:20px;box-shadow:0 0 0 7px rgba(255,99,56,.2),0 5px 15px rgba(8,31,51,.18)}
+.map-card__hub--perm{left:43%;top:65%}.map-card__hub--berezniki{right:auto;left:50%;top:48%}
+.map-card__legend{left:50%;bottom:20px;transform:translateX(-50%);white-space:nowrap;background:rgba(8,31,51,.9);box-shadow:0 10px 25px rgba(8,31,51,.18)}
+@media(max-width:640px){.map-card{height:390px}.map-card__image{object-position:center}.map-card__hub{padding:7px 9px;grid-template-columns:16px auto;column-gap:8px}.map-card__hub i{width:16px;height:16px;border-width:3px}.map-card__hub strong{font-size:15px}.map-card__hub--perm{left:35%;top:65%}.map-card__hub--berezniki{left:46%;top:47%}.map-card__legend{left:16px;right:16px;transform:none;white-space:normal}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.price-card{transition:none}}
 .header-cta{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:9px;background:var(--orange);color:#fff;font-size:14px;font-weight:900;box-shadow:0 9px 22px rgba(255,99,56,.2);transition:transform .2s,background .2s}.header-cta:hover{transform:translateY(-2px);background:var(--orange-dark)}
 .price-grid{grid-template-columns:repeat(3,1fr)}
