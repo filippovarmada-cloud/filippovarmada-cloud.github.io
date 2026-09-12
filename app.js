@@ -2,8 +2,9 @@
 const SITE_CONFIG = {
   phoneDisplay: '+7 (919) 486-03-61',
   phoneHref: '+79194860361',
-  email: 'habinvest-059@mail.ru',  messengerUrl: '', // пример: https://wa.me/73421234567
-  formEndpoint: '', // URL вебхука CRM / формы. При пустом значении заявка не отправляется.
+  email: 'habinvest-059@mail.ru',
+  messengerUrl: '', // пример: https://wa.me/73421234567
+  formEndpoint: '', // Необязательный внешний endpoint. На Tilda заявки передаются через встроенную форму.
   metrikaId: '' // номер счётчика Яндекс.Метрики
 };
 
@@ -26,6 +27,16 @@ document.querySelectorAll('.js-phone').forEach((link) => {
 });
 document.querySelectorAll('.js-messenger').forEach((link) => {
   if (SITE_CONFIG.messengerUrl) { link.href = SITE_CONFIG.messengerUrl; link.target = '_blank'; link.rel = 'noopener'; }
+});
+document.querySelectorAll('.contact-lines, .footer__grid > div').forEach((block) => {
+  if (!SITE_CONFIG.email || block.querySelector(`a[href="mailto:${SITE_CONFIG.email}"]`)) return;
+  const phone = block.querySelector('.js-phone');
+  if (!phone) return;
+  const email = document.createElement('a');
+  email.href = `mailto:${SITE_CONFIG.email}`;
+  email.textContent = SITE_CONFIG.email;
+  phone.insertAdjacentElement('afterend', email);
+  if (block.matches('.footer__grid > div')) email.insertAdjacentElement('beforebegin', document.createElement('br'));
 });
 
 function goal(name) {
@@ -61,11 +72,6 @@ document.querySelectorAll('.js-lead-form').forEach((form) => {
     event.preventDefault();
     const status = form.querySelector('.form-status');
     if (!form.reportValidity()) return;
-    if (!SITE_CONFIG.formEndpoint) {
-      status.className = 'form-status is-error';
-      status.textContent = 'Форма пока не подключена. Укажите рабочий телефон или endpoint в app.js перед запуском.';
-      return;
-    }
     const button = form.querySelector('button[type="submit"]');
     button.disabled = true; button.textContent = 'Отправляем…'; status.textContent = '';
     try {
@@ -74,8 +80,38 @@ document.querySelectorAll('.js-lead-form').forEach((form) => {
       payload.page_url = location.href;
       payload.consent_version = '10.09.2026';
       payload.consent_given_at = new Date().toISOString();
-      const response = await fetch(SITE_CONFIG.formEndpoint, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      if (!response.ok) throw new Error('Request failed');
+      if (SITE_CONFIG.formEndpoint) {
+        const response = await fetch(SITE_CONFIG.formEndpoint, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        if (!response.ok) throw new Error('Request failed');
+      } else {
+        const nativeForm = [...document.querySelectorAll('form.t-form')]
+          .find((candidate) => !candidate.classList.contains('js-lead-form'));
+        if (!nativeForm) throw new Error('Tilda form is unavailable');
+
+        const labels = {
+          form_name: 'Форма', name: 'Имя', phone: 'Телефон', deal_type: 'Интерес',
+          type: 'Тип помещения', quantity: 'Количество', city: 'Город', object: 'Объект',
+          duration: 'Срок', comment: 'Комментарий', utm_source: 'UTM source',
+          utm_medium: 'UTM medium', utm_campaign: 'UTM campaign', utm_content: 'UTM content',
+          utm_term: 'Ключевой запрос', yclid: 'Yandex Click ID', page_url: 'Страница'
+        };
+        Object.entries(payload).forEach(([key, value]) => {
+          if (!value || key === 'personal_data_consent') return;
+          let input = nativeForm.querySelector(`[name="${CSS.escape(key)}"]`);
+          if (!input) {
+            input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.dataset.tildaReq = '0';
+            nativeForm.appendChild(input);
+          }
+          input.value = value;
+          input.dataset.tildaRule = key === 'phone' ? 'phone' : '';
+          input.dataset.tildaFld = labels[key] || key;
+        });
+        nativeForm.requestSubmit();
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      }
       goal('lead_success');
       status.className = 'form-status is-success'; status.textContent = 'Спасибо! Заявка отправлена. Мы свяжемся с вами.';
       form.reset();
